@@ -32,8 +32,11 @@ The application uses a Manual DI Container to manage lifecycle and Dependencies
 
 ## How to Run
 1. Ensure .NET 10 SDK is installed.
-2. Restore dependencies: dotnet restore.
-3. Run the application: dotnet run.
+2. Clone the repository.
+3. Go into the downloaded repository, then into the OrderProcessingApp/OrderProcessingApp folder
+4. Launch terminal in that directory.
+5. Restore dependencies: dotnet restore.
+6. Run the application: dotnet run.
 
 ## Completed bonus tasks
 * Asynchronous processing
