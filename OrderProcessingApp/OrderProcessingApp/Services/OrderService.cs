@@ -1,4 +1,5 @@
 ﻿using OrderProcessingApp.Abstractions;
+using OrderProcessingApp.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -49,5 +50,10 @@ public class OrderService : IOrderService
 		{
 			_logger.LogError("Exception occured", ex);
 		}
+	}
+	
+	public async Task AddOrderAsync(Order order)
+	{
+		await _orderRepository.AddOrder(order);
 	}
 }
