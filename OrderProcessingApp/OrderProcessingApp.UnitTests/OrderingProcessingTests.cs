@@ -47,10 +47,13 @@ public class OrderingProcessingTests
         await _orderService.ProcessOrderAsync(invalidOrderId);
 
 		//Assert
+		//Check if logger error was invoked because of a wrong order number
 		_loggerMock.Verify(l => l.LogError(
 			It.Is<string>(s => s.Contains("Order ID must be greater than zero")),
 			It.IsAny<ArgumentException>()),
 			Times.Once);
+		
+		//Check if notification was not send because of an issue
 		_notificationMock.Verify(n => n.Send(It.IsAny<string>()), Times.Never);
 	}
 
@@ -68,11 +71,13 @@ public class OrderingProcessingTests
 		_loggerMock.Verify(l => l.LogInfo(
 		It.Is<string>(s => s.Contains($"Successfully processed order with ID: {validAndExistingOrderId}"))),
 		Times.Once);
-
+		
+		//Check if notification of successfull process happened exactly once
 		_notificationMock.Verify(n => n.Send(
 			It.Is<string>(s => s.Contains(expectedDescriptionForOrderIdEqualToOne))),
 			Times.Once);
-
+		
+		//Check if logger error was never invoked.
 		_loggerMock.Verify(l => l.LogError(It.IsAny<string>(), It.IsAny<Exception>()),
 			Times.Never);
 	}
@@ -89,12 +94,14 @@ public class OrderingProcessingTests
 		await _orderService.ProcessOrderAsync(validAndNotExistingOrderId);
 
 		//Assert
+
+		//Check if logger error was invoked because of an existing order number
 		_loggerMock.Verify(l => l.LogError(
 		It.Is<string>(s => s.Contains(errorMessage)),
 		It.IsAny<KeyNotFoundException>()),
 		Times.Once);
-
-		// Sprawdzamy, czy powiadomienie NIE zostało wysłane (bo był błąd)
+		
+		// Check if notification was not send because of an issue
 		_notificationMock.Verify(n => n.Send(It.IsAny<string>()),
 			Times.Never);
 	}
