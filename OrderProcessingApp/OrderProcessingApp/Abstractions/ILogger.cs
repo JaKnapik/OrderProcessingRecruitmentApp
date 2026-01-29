@@ -4,6 +4,8 @@ using System.Text;
 
 namespace OrderProcessingApp.Abstractions;
 
-internal interface ILogger
+public interface ILogger
 {
+	void LogInfo(string message);
+	void LogError(string message, Exception ex);
 }

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using OrderProcessingApp.Data;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace OrderProcessingApp.Abstractions;
 
-internal interface IOrderRepository
+public interface IOrderRepository
 {
+	string GetOrder(int orderId);
 }
