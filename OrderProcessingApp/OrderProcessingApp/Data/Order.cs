@@ -4,6 +4,8 @@ using System.Text;
 
 namespace OrderProcessingApp.Data;
 
-internal class Order
+public class Order
 {
+	public int Id { get; set; }
+	public string Description { get; set; }
 }

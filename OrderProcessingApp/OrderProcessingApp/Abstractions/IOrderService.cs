@@ -4,6 +4,7 @@ using System.Text;
 
 namespace OrderProcessingApp.Abstractions;
 
-internal interface IOrderService
+public interface IOrderService
 {
+	void ProcessOrder(int orderId);
 }
