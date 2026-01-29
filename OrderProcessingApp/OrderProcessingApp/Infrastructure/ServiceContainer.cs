@@ -1,4 +1,5 @@
-﻿using OrderProcessingApp.Abstractions;
+﻿using Microsoft.Extensions.Configuration;
+using OrderProcessingApp.Abstractions;
 using OrderProcessingApp.Data;
 using OrderProcessingApp.Logging;
 using OrderProcessingApp.Services;
@@ -12,11 +13,18 @@ public static class ServiceContainer
 {
 	public static (IOrderService OrderService, ILogger Logger) CreateServices()
 	{
-		ILogger logger = new ConsoleLogger();
+		var baseDirectory = AppContext.BaseDirectory;
+
+		IConfiguration configuration = new ConfigurationBuilder()
+			.SetBasePath(baseDirectory)
+			.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+			.Build();
+
+		ILogger logger = new ConsoleLogger(configuration);
 		IOrderRepository repository = new OrderRepository();
-
-		IOrderService orderService = new OrderService(repository, logger);
-
+		IOrderValidator orderValidator = new OrderValidator();
+		INotificationService notificationService = new NotificationService();
+		IOrderService orderService = new OrderService(repository, logger, orderValidator, notificationService);
 		return (orderService, logger);
 	}
 }
