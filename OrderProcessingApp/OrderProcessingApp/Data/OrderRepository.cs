@@ -27,7 +27,16 @@ public class OrderRepository : IOrderRepository
 	}
 	public async Task AddOrder(Order order)
 	{
+		await Task.Delay(100);
+		
+		if(order == null) throw new ArgumentNullException(nameof(order));
 
+		bool added = _orders.TryAdd(order.Id, order);
+
+		if(!added)
+		{
+			throw new InvalidOperationException($"Order with ID {order.Id} already exists.");
+		}
 	}
 	public async Task<string> GetOrder(int orderId)
 	{
