@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OrderProcessingApp.Abstractions;
 
-public interface IOrderService
+public interface IOrderValidator
 {
-	Task ProcessOrderAsync(int orderId);
+	bool IsValid(int orderId);
 }

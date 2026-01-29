@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace OrderProcessingApp.Abstractions;
-
-public interface IOrderService
+public interface INotificationService
 {
-	Task ProcessOrderAsync(int orderId);
+    void Send(string message);
 }

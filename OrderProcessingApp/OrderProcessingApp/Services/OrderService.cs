@@ -9,20 +9,33 @@ public class OrderService : IOrderService
 {
 	private readonly IOrderRepository _orderRepository;
 	private readonly ILogger _logger;
+	private readonly IOrderValidator _orderValidator;
+	private readonly INotificationService _notificationService;
 
-	public OrderService(IOrderRepository orderRepository, ILogger logger)
+	public OrderService(IOrderRepository orderRepository, ILogger logger, IOrderValidator orderValidator, INotificationService notificationService)
 	{
 		_orderRepository = orderRepository;
 		_logger = logger;
+		_orderValidator = orderValidator;
+		_notificationService = notificationService;
 	}
 
-	public void ProcessOrder(int orderId)
+	public async Task ProcessOrderAsync(int orderId)
 	{
 		_logger.LogInfo($"Started processing of order with ID: {orderId}");
 		try
 		{
-			var order = _orderRepository.GetOrder(orderId);
-			_logger.LogInfo($"Successfully processed order with ID: {orderId}");
+			if (_orderValidator.IsValid(orderId))
+			{
+				var order = await _orderRepository.GetOrder(orderId);
+				_logger.LogInfo($"Successfully processed order with ID: {orderId}");
+				_notificationService.Send($"Successfully processed order with ID: {orderId}");
+			}
+			else
+			{
+				throw new ArgumentException("Order ID must be greater than zero.");
+			}
+			
 		}
 		catch (ArgumentException ex)
 		{

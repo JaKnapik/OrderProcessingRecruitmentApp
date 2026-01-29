@@ -7,5 +7,6 @@ namespace OrderProcessingApp.Abstractions;
 
 public interface IOrderRepository
 {
-	string GetOrder(int orderId);
+	Task<string> GetOrder(int orderId);
+	Task AddOrder(Order order);
 }

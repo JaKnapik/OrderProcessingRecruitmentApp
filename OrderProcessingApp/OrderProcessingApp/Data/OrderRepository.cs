@@ -25,8 +25,13 @@ public class OrderRepository : IOrderRepository
 			Description = "Phone"
 		});
 	}
-	public string GetOrder(int orderId)
+	public async Task AddOrder(Order order)
 	{
+
+	}
+	public async Task<string> GetOrder(int orderId)
+	{
+		await Task.Delay(100);
 		if (orderId <= 0)
 		{
 			throw new ArgumentException("Order ID must be greater than zero.");
